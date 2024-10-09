@@ -168,10 +168,54 @@ class ProfileResource(Resource):
             db.session.rollback()
             return {"error": str(e)}, 500
 
+class ProfileListResource(Resource):
+    @jwt_required()
+    def get(self):
+        # Get pagination parameters from query string
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        location = request.args.get('location', '')
+
+        # Limit per_page to a maximum of 100 to prevent excessive data requests
+        per_page = min(per_page, 100)
+
+        # Base query
+        query = Profile.query
+
+        # Apply location filter if provided
+        if location:
+            # Using ILIKE for case-insensitive search
+            query = query.filter(Profile.location.ilike(f'%{location}%'))
+
+        # Apply pagination
+        pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+
+        # Prepare the response
+        profiles = [{
+            "id": profile.id,
+            "full_name": profile.full_name,
+            "bio": profile.bio,
+            "location": profile.location
+        } for profile in pagination.items]
+
+        # Add pagination metadata
+        meta = {
+            "page": page,
+            "per_page": per_page,
+            "total_pages": pagination.pages,
+            "total_items": pagination.total
+        }
+
+        return {
+            "profiles": profiles,
+            "meta": meta
+        }, 200
+    
 api.add_resource(Register, '/register')
 api.add_resource(Verify, '/verify')
 api.add_resource(Login, '/login')
 api.add_resource(ProfileResource, '/profile')
+api.add_resource(ProfileListResource, '/profiles')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

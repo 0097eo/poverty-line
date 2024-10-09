@@ -90,9 +90,88 @@ class Login(Resource):
         access_token = create_access_token(identity=user.id)
         return {"access_token": access_token}, 200
 
+class ProfileResource(Resource):
+    @jwt_required()
+    def post(self):
+        current_user_id = get_jwt_identity()
+        data = request.get_json()
+
+        user = db.session.get(User, current_user_id)
+        if user.profile:
+            return {"error": "Profile already exists"}, 400
+
+        new_profile = Profile(
+            user_id=current_user_id,
+            full_name=data.get('full_name'),
+            bio=data.get('bio'),
+            location=data.get('location')
+        )
+
+        try:
+            db.session.add(new_profile)
+            db.session.commit()
+            return {"message": "Profile created successfully"}, 201
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+
+    @jwt_required()
+    def get(self):
+        current_user_id = get_jwt_identity()
+        user = db.session.get(User, current_user_id)
+
+        if not user.profile:
+            return {"error": "Profile not found"}, 404
+
+        return {
+            "id": user.profile.id,
+            "full_name": user.profile.full_name,
+            "bio": user.profile.bio,
+            "location": user.profile.location,
+            "created_at": user.profile.created_at.isoformat(),
+            "updated_at": user.profile.updated_at.isoformat()
+        }, 200
+    
+    @jwt_required()
+    def put(self):
+        current_user_id = get_jwt_identity()
+        profile = Profile.query.filter_by(user_id=current_user_id).first()
+
+        if not profile:
+            return {"error": "Profile not found"}, 404
+
+        data = request.get_json()
+        profile.full_name = data.get('full_name', profile.full_name)
+        profile.bio = data.get('bio', profile.bio)
+        profile.location = data.get('location', profile.location)
+
+        try:
+            db.session.commit()
+            return {"message": "Profile updated successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+        
+    @jwt_required()
+    def delete(self):
+        current_user_id = get_jwt_identity()
+        profile = Profile.query.filter_by(user_id=current_user_id).first()
+
+        if not profile:
+            return {"error": "Profile not found"}, 404
+
+        try:
+            db.session.delete(profile)
+            db.session.commit()
+            return {"message": "Profile deleted successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
 
 api.add_resource(Register, '/register')
 api.add_resource(Verify, '/verify')
 api.add_resource(Login, '/login')
+api.add_resource(ProfileResource, '/profile')
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

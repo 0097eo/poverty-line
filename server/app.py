@@ -3,7 +3,7 @@ from flask import request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 import smtplib
-from models import User, Profile
+from models import User, Profile, Record, SocialBackground, Region
 from email.mime.text import MIMEText
 import secrets
 
@@ -211,11 +211,130 @@ class ProfileListResource(Resource):
             "meta": meta
         }, 200
     
+
+class RecordResource(Resource):
+    @jwt_required()
+    def post(self):
+        current_user_id = get_jwt_identity()
+        data = request.get_json()
+
+        new_record = Record(
+            user_id=current_user_id,
+            region_id=data['region_id'],
+            social_background_id=data['social_background_id'],
+            income=data['income'],
+            education_level=data['education_level'],
+            employment_status=data['employment_status']
+        )
+
+        try:
+            db.session.add(new_record)
+            db.session.commit()
+            return {"message": "Record created successfully", "id": new_record.id}, 201
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+
+    @jwt_required()
+    def get(self, record_id=None):
+        if record_id:
+            record = Record.query.get(record_id)
+            if not record:
+                return {"error": "Record not found"}, 404
+            return {
+                "id": record.id,
+                "region": record.region.name,
+                "social_background": record.social_background.name,
+                "income": record.income,
+                "education_level": record.education_level,
+                "employment_status": record.employment_status
+            }, 200
+        
+        # Get all records with filtering and pagination
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        region = request.args.get('region')
+        social_background = request.args.get('social_background')
+        min_income = request.args.get('min_income', type=float)
+        max_income = request.args.get('max_income', type=float)
+
+        query = Record.query
+
+        if region:
+            query = query.join(Region).filter(Region.name.ilike(f'%{region}%'))
+        if social_background:
+            query = query.join(SocialBackground).filter(SocialBackground.name.ilike(f'%{social_background}%'))
+        if min_income:
+            query = query.filter(Record.income >= min_income)
+        if max_income:
+            query = query.filter(Record.income <= max_income)
+
+        pagination = query.paginate(page=page, per_page=per_page)
+        
+        records = [{
+            "id": record.id,
+            "region": record.region.name,
+            "social_background": record.social_background.name,
+            "income": record.income,
+            "education_level": record.education_level,
+            "employment_status": record.employment_status
+        } for record in pagination.items]
+
+        return {
+            "records": records,
+            "meta": {
+                "page": page,
+                "per_page": per_page,
+                "total_pages": pagination.pages,
+                "total_items": pagination.total
+            }
+        }, 200
+
+    @jwt_required()
+    def put(self, record_id):
+        current_user_id = get_jwt_identity()
+        record = Record.query.filter_by(id=record_id, user_id=current_user_id).first()
+        
+        if not record:
+            return {"error": "Record not found or unauthorized"}, 404
+
+        data = request.get_json()
+        for key, value in data.items():
+            if hasattr(record, key):
+                setattr(record, key, value)
+
+        try:
+            db.session.commit()
+            return {"message": "Record updated successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+
+    @jwt_required()
+    def delete(self, record_id):
+        current_user_id = get_jwt_identity()
+        record = Record.query.filter_by(id=record_id, user_id=current_user_id).first()
+        
+        if not record:
+            return {"error": "Record not found or unauthorized"}, 404
+
+        try:
+            db.session.delete(record)
+            db.session.commit()
+            return {"message": "Record deleted successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+
+
+    
 api.add_resource(Register, '/register')
 api.add_resource(Verify, '/verify')
 api.add_resource(Login, '/login')
 api.add_resource(ProfileResource, '/profile')
 api.add_resource(ProfileListResource, '/profiles')
+api.add_resource(RecordResource, '/records', '/records/<int:record_id>')
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

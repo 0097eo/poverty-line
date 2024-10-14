@@ -6,6 +6,7 @@ import smtplib
 from models import User, Profile, Record, SocialBackground, Region
 from email.mime.text import MIMEText
 import secrets
+from sqlalchemy import desc
 
 def send_verification_email(email, verification_code):
     sender = 'emmanuelokello294@gmail.com'
@@ -326,7 +327,69 @@ class RecordResource(Resource):
             db.session.rollback()
             return {"error": str(e)}, 500
 
+class RegionResource(Resource):
+    @jwt_required()
+    def get(self):
+        #get query parameter
+        sort_by = request.args.get('sort_by', 'name')
+        order_by = request.args.get('order_by', 'asc')
+        country_filter = request.args.get('country')
+        min_poverty_rate = request.args.get('min_poverty_rate', type=float)
+        max_poverty_rate = request.args.get('max_poverty_rate', type=float)
 
+        #base query
+        query = Region.query
+
+        #apply filters
+        if country_filter:
+            query = query.filter(Region.country.ilike(f'%{country_filter}%'))
+        if min_poverty_rate is not None:
+            query = query.filter(Region.poverty_rate >= min_poverty_rate)
+        if max_poverty_rate is not None:
+            query = query.filter(Region.poverty_rate <= max_poverty_rate)
+
+        # Apply sorting
+        if sort_by in ['name', 'country', 'poverty_rate']:
+            order = desc(getattr(Region, sort_by)) if order_by == 'desc' else getattr(Region, sort_by)
+            query = query.order_by(order)
+        
+
+        #execute the query
+        regions = query.all()
+        return [{
+            "id": region.id,
+            "name": region.name,
+            "country": region.country,
+            "poverty_rate": region.poverty_rate
+        } for region in regions], 200
+
+class SocialBackgroundResource(Resource):
+    @jwt_required()
+    def get(self):
+        # Get query parameters
+        sort_by = request.args.get("sort_by", 'name')
+        order_by = request.args.get("order_by", 'asc')
+        name_filter = request.args.get("name")
+
+        # Base query
+        query = SocialBackground.query
+
+        # Apply filters
+        if name_filter:
+            query = query.filter(SocialBackground.name.ilike(f'%{name_filter}%'))
+
+        # Apply sorting
+        if sort_by in ['name', 'id']:
+            order = desc(getattr(SocialBackground, sort_by)) if order_by== 'desc' else getattr(SocialBackground, sort_by)
+            query = query.order_by(order)
+
+        #execute query    
+        backgrounds = query.all()
+        return [{
+            "id": background.id,
+            "name": background.name,
+            "description": background.description
+        } for background in backgrounds], 200
     
 api.add_resource(Register, '/register')
 api.add_resource(Verify, '/verify')
@@ -334,6 +397,8 @@ api.add_resource(Login, '/login')
 api.add_resource(ProfileResource, '/profile')
 api.add_resource(ProfileListResource, '/profiles')
 api.add_resource(RecordResource, '/records', '/records/<int:record_id>')
+api.add_resource(RegionResource, '/regions')
+api.add_resource(SocialBackgroundResource, '/social-backgrounds')
 
 
 if __name__ == "__main__":

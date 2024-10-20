@@ -1,6 +1,15 @@
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../redux/authSlice';
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <nav className="bg-black p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -36,12 +45,14 @@ const Navbar = () => {
           >
             Backgrounds
           </NavLink>
-          <NavLink 
-            to="/profile" 
-            className={({ isActive }) => isActive ? "text-purple-400" : "text-white hover:text-gray-300"}
-          >
-            Profile
-          </NavLink>
+          {isAuthenticated && (
+            <NavLink 
+              to="/profile" 
+              className={({ isActive }) => isActive ? "text-purple-400" : "text-white hover:text-gray-300"}
+            >
+              Profile
+            </NavLink>
+          )}
           <NavLink 
             to="/members" 
             className={({ isActive }) => isActive ? "text-purple-400" : "text-white hover:text-gray-300"}
@@ -49,11 +60,20 @@ const Navbar = () => {
             Members
           </NavLink>
         </div>
-        <NavLink to="/login">
-          <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300">
-            Login
+        {isAuthenticated ? (
+          <button 
+            onClick={handleLogout}
+            className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300"
+          >
+            Logout
           </button>
-        </NavLink>
+        ) : (
+          <NavLink to="/login">
+            <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300">
+              Login
+            </button>
+          </NavLink>
+        )}
       </div>
     </nav>
   );

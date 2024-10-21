@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, Globe, Users, Hand, DollarSign } from 'lucide-react';
+import { Heart, Globe, Users, Hand, DollarSign, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const HomePage = () => {
   return (
@@ -107,31 +107,31 @@ const HomePage = () => {
         </div>
       </section>
 
-{/* Quote Section */}
-<section className="container mx-auto px-4 py-20 text-center">
-  <div className="flex flex-wrap justify-center">
-    <div className="w-full sm:w-1/3 p-4">
-      <p className="text-2xl italic mb-4">"As we lose ourselves in the service of others, we discover our own happiness."</p>
-      <img src="https://images.unsplash.com/photo-1440451185281-11ff5853ce0a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
-      <p className="font-bold">Patrick Matasi</p>
-      <p className="text-sm">Volunteer</p>
-    </div>
-    
-    <div className="w-full sm:w-1/3 p-4">
-      <p className="text-2xl italic mb-4">"The best way to find yourself is to lose yourself in the service of others."</p>
-      <img src="https://images.unsplash.com/photo-1601921004897-b7d582836990?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
-      <p className="font-bold">Mahatma Gandhi</p>
-      <p className="text-sm">Activist</p>
-    </div>
+      {/* Quote Section */}
+      <section className="container mx-auto px-4 py-20 text-center">
+        <div className="flex flex-wrap justify-center">
+          <div className="w-full sm:w-1/3 p-4">
+            <p className="text-2xl italic mb-4">"As we lose ourselves in the service of others, we discover our own happiness."</p>
+            <img src="https://images.unsplash.com/photo-1440451185281-11ff5853ce0a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
+            <p className="font-bold">Patrick Matasi</p>
+            <p className="text-sm">Volunteer</p>
+          </div>
+          
+          <div className="w-full sm:w-1/3 p-4">
+            <p className="text-2xl italic mb-4">"The best way to find yourself is to lose yourself in the service of others."</p>
+            <img src="https://images.unsplash.com/photo-1601921004897-b7d582836990?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
+            <p className="font-bold">Mahatma Gandhi</p>
+            <p className="text-sm">Activist</p>
+          </div>
 
-    <div className="w-full sm:w-1/3 p-4">
-      <p className="text-2xl italic mb-4">"Volunteers do not necessarily have the time; they just have the heart."</p>
-      <img src="https://images.unsplash.com/photo-1612708474132-9c9b981c016b?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
-      <p className="font-bold">Larenz Tate</p>
-      <p className="text-sm">Musician</p>
-    </div>
-  </div>
-</section>
+          <div className="w-full sm:w-1/3 p-4">
+            <p className="text-2xl italic mb-4">"Volunteers do not necessarily have the time; they just have the heart."</p>
+            <img src="https://images.unsplash.com/photo-1612708474132-9c9b981c016b?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quote author" className="w-20 h-20 rounded-full mx-auto mb-2" />
+            <p className="font-bold">Larenz Tate</p>
+            <p className="text-sm">Musician</p>
+          </div>
+        </div>
+      </section>
 
 
 
@@ -140,10 +140,10 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <p className="text-center mb-4">Let's come be part of the changes</p>
           <div className="flex justify-center space-x-4 mb-4">
-            <a href="#" className="text-purple-400 hover:text-purple-300">Facebook</a>
-            <a href="#" className="text-purple-400 hover:text-purple-300">Twitter</a>
-            <a href="#" className="text-purple-400 hover:text-purple-300">Instagram</a>
-            <a href="#" className="text-purple-400 hover:text-purple-300">LinkedIn</a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Facebook /></a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Twitter /></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Instagram /></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Linkedin /></a>
           </div>
           <p className="text-center text-sm">© 2024 PovertyLine. All rights reserved.</p>
         </div>

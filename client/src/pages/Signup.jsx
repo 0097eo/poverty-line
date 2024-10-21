@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../redux/authSlice';
 import { Link } from 'react-router-dom';
-import { UserCircle, Mail, Lock } from 'lucide-react';
+import { UserCircle, Mail, Lock, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -17,6 +17,7 @@ const SignUp = () => {
   };
 
   return (
+    <>
     <div className="bg-white text-black min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <h2 className="text-4xl font-bold mb-8 text-center">Join Us</h2>
@@ -91,6 +92,20 @@ const SignUp = () => {
         </p>
       </div>
     </div>
+    {/* Footer */}
+    <footer className="bg-black text-white py-10 rounded-t-3xl">
+      <div className="container mx-auto px-4">
+        <p className="text-center mb-4">Let's come be part of the changes</p>
+        <div className="flex justify-center space-x-4 mb-4">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Facebook /></a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Twitter /></a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Instagram /></a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Linkedin /></a>
+        </div>
+        <p className="text-center text-sm">© 2024 PovertyLine. All rights reserved.</p>
+      </div>
+    </footer>
+    </>
   );
 };
 

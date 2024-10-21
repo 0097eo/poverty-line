@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 
 const AboutPage = () => {
     return (
@@ -60,15 +61,16 @@ const AboutPage = () => {
             </button>
           </Link>
         </section>
+
         {/* Footer */}
         <footer className="bg-black text-white py-10 rounded-t-3xl">
           <div className="container mx-auto px-4">
             <p className="text-center mb-4">Let's come be part of the changes</p>
             <div className="flex justify-center space-x-4 mb-4">
-              <a href="#" className="text-purple-400 hover:text-purple-300">Facebook</a>
-              <a href="#" className="text-purple-400 hover:text-purple-300">Twitter</a>
-              <a href="#" className="text-purple-400 hover:text-purple-300">Instagram</a>
-              <a href="#" className="text-purple-400 hover:text-purple-300">LinkedIn</a>
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Facebook /></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Twitter /></a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Instagram /></a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300"><Linkedin /></a>
             </div>
             <p className="text-center text-sm">© 2024 PovertyLine. All rights reserved.</p>
           </div>

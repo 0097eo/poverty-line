@@ -50,7 +50,7 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(register.rejected, (state, action) => {
@@ -61,7 +61,7 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(verify.fulfilled, (state, action) => {
+      .addCase(verify.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(verify.rejected, (state, action) => {

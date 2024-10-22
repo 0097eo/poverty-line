@@ -50,12 +50,11 @@ const Navbar = () => {
             </NavLink>
           </div>
           <div className="hidden md:flex space-x-6">
+            <NavItem to="/" setIsOpen={setIsOpen}>Home</NavItem>
             <NavItem to="/about" setIsOpen={setIsOpen}>About</NavItem>
             <NavItem to="/records" setIsOpen={setIsOpen}>Records</NavItem>
-            <NavItem to="/categories" setIsOpen={setIsOpen}>Categories</NavItem>
-            <NavItem to="/backgrounds" setIsOpen={setIsOpen}>Backgrounds</NavItem>
             {isAuthenticated && <NavItem to="/profile" setIsOpen={setIsOpen}>Profile</NavItem>}
-            <NavItem to="/members" setIsOpen={setIsOpen}>Members</NavItem>
+            <NavItem to="/profiles" setIsOpen={setIsOpen}>Members</NavItem>
           </div>
           <div className="hidden md:block">
             {isAuthenticated ? (

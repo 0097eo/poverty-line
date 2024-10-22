@@ -174,7 +174,7 @@ class ProfileListResource(Resource):
     def get(self):
         # Get pagination parameters from query string
         page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 10, type=int)
+        per_page = request.args.get('per_page', 9, type=int)
         location = request.args.get('location', '')
 
         # Limit per_page to a maximum of 100 to prevent excessive data requests
@@ -253,7 +253,7 @@ class RecordResource(Resource):
         
         # Get all records with filtering and pagination
         page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 10, type=int)
+        per_page = request.args.get('per_page', 9, type=int)
         region = request.args.get('region')
         social_background = request.args.get('social_background')
         min_income = request.args.get('min_income', type=float)

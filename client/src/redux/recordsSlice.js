@@ -48,7 +48,7 @@ const recordsSlice = createSlice({
     items: [],
     meta: {
       page: 1,
-      per_page: 10,
+      per_page: 9,
       total_pages: 0,
       total_items: 0,
     },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../redux/authSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserCircle, Mail, Lock, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
 
 const SignUp = () => {
@@ -10,10 +10,12 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(register({ username, email, password }));
+    navigate('/verify', {state:  {email} });
   };
 
   return (

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import ProfilePage from "./pages/Profile";
 import RecordsPage from "./pages/Records";
 import ProfileList from "./pages/Profiles";
+import VerifyEmail from "./pages/Verify";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/records" element={<RecordsPage />} />
         <Route path="/profiles" element={<ProfileList />} />
+        <Route path="/verify" element={<VerifyEmail />} />
       </Routes>
     </Router>
     </>

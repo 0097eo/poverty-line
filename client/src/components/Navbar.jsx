@@ -52,9 +52,13 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-6">
             <NavItem to="/" setIsOpen={setIsOpen}>Home</NavItem>
             <NavItem to="/about" setIsOpen={setIsOpen}>About</NavItem>
-            <NavItem to="/records" setIsOpen={setIsOpen}>Records</NavItem>
-            {isAuthenticated && <NavItem to="/profile" setIsOpen={setIsOpen}>Profile</NavItem>}
-            <NavItem to="/profiles" setIsOpen={setIsOpen}>Members</NavItem>
+            {isAuthenticated && (
+              <>
+                <NavItem to="/records" setIsOpen={setIsOpen}>Records</NavItem>
+                <NavItem to="/profile" setIsOpen={setIsOpen}>Profile</NavItem>
+                <NavItem to="/profiles" setIsOpen={setIsOpen}>Members</NavItem>
+              </>
+            )}
           </div>
           <div className="hidden md:block">
             {isAuthenticated ? (
@@ -81,11 +85,13 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden mt-4">
             <NavItem to="/about" setIsOpen={setIsOpen}>About</NavItem>
-            <NavItem to="/records" setIsOpen={setIsOpen}>Records</NavItem>
-            <NavItem to="/categories" setIsOpen={setIsOpen}>Categories</NavItem>
-            <NavItem to="/backgrounds" setIsOpen={setIsOpen}>Backgrounds</NavItem>
-            {isAuthenticated && <NavItem to="/profile" setIsOpen={setIsOpen}>Profile</NavItem>}
-            <NavItem to="/members" setIsOpen={setIsOpen}>Members</NavItem>
+            {isAuthenticated && (
+              <>
+                <NavItem to="/records" setIsOpen={setIsOpen}>Records</NavItem>
+                <NavItem to="/profile" setIsOpen={setIsOpen}>Profile</NavItem>
+                <NavItem to="/profiles" setIsOpen={setIsOpen}>Members</NavItem>
+              </>
+            )}
             <div className="mt-4">
               {isAuthenticated ? (
                 <button

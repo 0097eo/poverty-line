@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../redux/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserCircle, Mail, Lock, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { UserCircle, Mail, Lock, Eye, EyeOff, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const SignUp = () => {
     e.preventDefault();
     dispatch(register({ username, email, password }));
     navigate('/verify', {state:  {email} });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -65,15 +70,22 @@ const SignUp = () => {
             </label>
             <div className="relative">
               <input
-                className="shadow appearance-none border rounded-full w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-600 pl-12"
+                className="shadow appearance-none border rounded-full w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-600 pl-12 pr-12"
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <Lock className="absolute left-4 top-3 text-gray-400" size={20} />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-4 top-3 text-gray-400 focus:outline-none"
+              >
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+              </button>
             </div>
           </div>
           <div className="flex items-center justify-between">
